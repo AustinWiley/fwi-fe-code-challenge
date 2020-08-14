@@ -1,4 +1,11 @@
-import { FETCH_PLAYERS_SUCCESS, DELETE_PLAYER_SUCCESS } from './constants';
+import {
+  FETCH_PLAYERS_SUCCESS,
+  DELETE_PLAYER_SUCCESS,
+  ADD_PLAYER_SUCCESS,
+  UPDATE_PLAYER_SUCCESS,
+  TOGGLE_ADD_MODAL,
+  HANDLE_INPUT_CHANGE,
+} from './constants';
 
 export function fetchPlayersSuccess(data) {
   return { type: FETCH_PLAYERS_SUCCESS, payload: { data } };
@@ -6,4 +13,20 @@ export function fetchPlayersSuccess(data) {
 
 export function deletePlayerSuccess(data) {
   return { type: DELETE_PLAYER_SUCCESS, payload: { data } };
+}
+
+export function addPlayerSuccess(data) {
+  return { type: ADD_PLAYER_SUCCESS, payload: { data } };
+}
+
+export function updatePlayerSuccess(data) {
+  return { type: UPDATE_PLAYER_SUCCESS, payload: { data } };
+}
+
+export function toggleAddModal(data) {
+  return { type: TOGGLE_ADD_MODAL, payload: { data } };
+}
+
+export function handleInputChange(data) {
+  return { type: HANDLE_INPUT_CHANGE, payload: { data } };
 }

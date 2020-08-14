@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchPlayersSuccess, deletePlayerSuccess } from '../appState/actions';
+import {
+  fetchPlayersSuccess,
+  deletePlayerSuccess,
+  addPlayerSuccess,
+  updatePlayerSuccess,
+} from '../appState/actions';
 
 import './PlayerTable.scss';
 import API from '../Utils/API';
@@ -9,12 +14,6 @@ import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
 const getPlayers = (state) => {
-  console.log(
-    'get players State==================================================='
-  );
-  // console.log(state.players['68ba4d39-2ae8-4756-8456-e0e6f23e48a3'])
-  console.log(state);
-
   return state.playerIds.map((id) => state.players[id]);
 };
 
@@ -25,19 +24,34 @@ const PlayerTable = () => {
     (async function fetchPlayers() {
       const response = await API.getAllPlayers();
       const data = response.data;
-      console.log('fetch players data');
-      console.log(data);
-
       dispatch(fetchPlayersSuccess(data));
-      // console.log(data)
-      console.log('Use effect');
     })();
   }, [dispatch]);
+
+  async function addPlayer() {
+    try {
+      const response = await API.addPlayer();
+      const data = response.data;
+      console.log(data);
+      dispatch(addPlayerSuccess(data));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function updatePlayer(id) {
+    console.log(id);
+    const response = await API.updatePlayer(id);
+    console.log(
+      '---------------------playerUpdae response PLayerTable.jsx  line 45'
+    );
+    console.log(response);
+    dispatch(updatePlayerSuccess(response.data));
+  }
 
   async function deletePlayer(id) {
     try {
       const response = await API.deletePlayer(id);
-      console.log('Delete player response');
       console.log(response);
       dispatch(deletePlayerSuccess(id));
     } catch (error) {
@@ -55,7 +69,12 @@ const PlayerTable = () => {
       className="player-table"
     >
       <TableHeader />
-      <TableBody players={players} deletePlayer={deletePlayer} />
+      <TableBody
+        players={players}
+        deletePlayer={deletePlayer}
+        addPlayer={addPlayer}
+        updatePlayer={updatePlayer}
+      />
     </div>
   );
 };
