@@ -1,69 +1,39 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { COUNTRIES } from '../constants';
-
 import {
-  fetchPlayersSuccess,
   deletePlayerSuccess,
   addPlayerSuccess,
   updatePlayerSuccess,
   toggleAddModal,
   handleInputChange,
 } from '../appState/actions';
-
-// import './PlayerTable.scss';
 import API from '../Utils/API';
-
-const getState = (state) => {
-  console.log('UI State  ===================');
-  console.log(state.UI);
-  // console.log(state.players['68ba4d39-2ae8-4756-8456-e0e6f23e48a3'])
-  //   console.log(state);
-  return state.UI;
-};
+import { validURL, toDollars } from '../Utils/TOOLS';
 
 const Modal = () => {
   const dispatch = useDispatch();
 
+  const getState = (state) => {
+    console.log('UI State  ===================');
+    console.log(state.UI);
+    return state.UI;
+  };
+
   const uiState = useSelector(getState);
 
-  function validURL(str) {
-    var pattern = new RegExp(
-      '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$',
-      'i'
-    ); // fragment locator
-    console.log(!!pattern.test(str));
-    return !!pattern.test(str);
-  }
-
   function inputChange(event) {
-    console.log(
-      '===================+++=++=++HANDLE INPUT CHANGE=++=++==++=++=+=++=++==+=====++='
-    );
     const { name, value } = event.target;
-
-    // if (name === 'winnings') {
-    //     newValue = value.replace(/[^0-9]/g, '')
-    // }
-
     const data = {
       name: name,
       value: name === 'winnings' ? Number(value.replace(/[^0-9]/g, '')) : value,
     };
-    console.log(data);
-
     dispatch(handleInputChange(data));
   }
 
   async function addPlayer() {
     const newPlayer = {
       name: uiState.name,
-
       country: uiState.country,
       winnings: parseInt(uiState.winnings),
       imageUrl: validURL(uiState.imageUrl) ? uiState.imageUrl : '',
@@ -79,18 +49,37 @@ const Modal = () => {
     }
   }
 
-  function toDollars() {
-    return uiState.winnings.toLocaleString(undefined, {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    });
+  async function updatePlayer() {
+    const playerId = uiState.id;
+    const updatedPlayerData = {
+      name: uiState.name,
+      country: uiState.country,
+      winnings: parseInt(uiState.winnings),
+      imageUrl: validURL(uiState.imageUrl) ? uiState.imageUrl : '',
+    };
+    try {
+      const response = await API.updatePlayer(playerId, updatedPlayerData);
+      const data = response.data;
+      console.log(data);
+      dispatch(updatePlayerSuccess(data));
+      dispatch(toggleAddModal());
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function deletePlayer(id) {
+    try {
+      const response = await API.deletePlayer(id);
+      dispatch(deletePlayerSuccess(id));
+      dispatch(toggleAddModal());
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function countryOptions() {
     const allCountries = [];
-
     Object.keys(COUNTRIES).forEach((item, i) =>
       allCountries.push(
         <option value={item} key={item + i}>
@@ -98,8 +87,6 @@ const Modal = () => {
         </option>
       )
     );
-
-    console.log(allCountries);
     return allCountries;
   }
 
@@ -108,7 +95,9 @@ const Modal = () => {
       <div className="modal-background"></div>
       <div className="modal-card">
         <header className="modal-card-head">
-          <p className="modal-card-title">Add a Player</p>
+          <p className="modal-card-title">
+            {uiState.modalAction === 'update' ? 'Update' : 'Add'} a Player
+          </p>
           <button
             className="delete"
             aria-label="close"
@@ -130,7 +119,6 @@ const Modal = () => {
                   placeholder="Enter Name"
                 />
               </div>
-
               <div className="field">
                 <label className="label">Winnings</label>
                 <input
@@ -139,10 +127,9 @@ const Modal = () => {
                   placeholder="Enter Winnings"
                   onChange={inputChange}
                   name="winnings"
-                  value={toDollars()}
+                  value={toDollars(uiState.winnings)}
                 />
               </div>
-
               <div className="field">
                 <label className="label">Country</label>
                 <p className="control">
@@ -159,7 +146,6 @@ const Modal = () => {
                   </span>
                 </p>
               </div>
-
               <div className="field">
                 <label className="label">Image URL</label>
                 <input
@@ -175,9 +161,31 @@ const Modal = () => {
           </div>
         </section>
         <footer className="modal-card-foot">
-          <button className="button is-success" onClick={() => addPlayer()}>
-            Save Player
+          <button
+            disabled={
+              uiState.name &&
+              (uiState.winnings || uiState.winnings >= 0) &&
+              uiState.country
+                ? false
+                : true
+            }
+            className="button is-success"
+            onClick={() => {
+              uiState.modalAction === 'update' ? updatePlayer() : addPlayer();
+            }}
+          >
+            {uiState.modalAction === 'update' ? 'Save Changes' : 'Save Player'}
           </button>
+          {uiState.modalAction === 'update' ? (
+            <button
+              className="button is-danger"
+              onClick={() => deletePlayer(uiState.id)}
+            >
+              Delete player
+            </button>
+          ) : (
+            <></>
+          )}
           <button className="button" onClick={() => dispatch(toggleAddModal())}>
             Cancel
           </button>

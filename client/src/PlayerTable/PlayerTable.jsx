@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import {
   fetchPlayersSuccess,
   deletePlayerSuccess,
   addPlayerSuccess,
-  updatePlayerSuccess,
+  handleOpenUpdate,
 } from '../appState/actions';
-
 import './PlayerTable.scss';
 import API from '../Utils/API';
 import TableHeader from './TableHeader';
@@ -32,21 +30,10 @@ const PlayerTable = () => {
     try {
       const response = await API.addPlayer();
       const data = response.data;
-      console.log(data);
       dispatch(addPlayerSuccess(data));
     } catch (error) {
       console.error(error);
     }
-  }
-
-  async function updatePlayer(id) {
-    console.log(id);
-    const response = await API.updatePlayer(id);
-    console.log(
-      '---------------------playerUpdae response PLayerTable.jsx  line 45'
-    );
-    console.log(response);
-    dispatch(updatePlayerSuccess(response.data));
   }
 
   async function deletePlayer(id) {
@@ -54,6 +41,15 @@ const PlayerTable = () => {
       const response = await API.deletePlayer(id);
       console.log(response);
       dispatch(deletePlayerSuccess(id));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function openUpdateModal(id) {
+    try {
+      const response = await API.getAPlayer(id);
+      dispatch(handleOpenUpdate(response.data));
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +69,7 @@ const PlayerTable = () => {
         players={players}
         deletePlayer={deletePlayer}
         addPlayer={addPlayer}
-        updatePlayer={updatePlayer}
+        openUpdateModal={openUpdateModal}
       />
     </div>
   );
