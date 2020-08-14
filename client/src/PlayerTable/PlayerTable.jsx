@@ -1,28 +1,49 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchPlayersSuccess } from '../appState/actions';
+import { fetchPlayersSuccess, deletePlayerSuccess } from '../appState/actions';
 
 import './PlayerTable.scss';
+import API from '../Utils/API';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
-const getPlayers = (state) => state.playerIds.map((id) => state.players[id]);
+const getPlayers = (state) => {
+  console.log(
+    'get players State==================================================='
+  );
+  // console.log(state.players['68ba4d39-2ae8-4756-8456-e0e6f23e48a3'])
+  console.log(state);
+
+  return state.playerIds.map((id) => state.players[id]);
+};
 
 const PlayerTable = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     (async function fetchPlayers() {
-      const response = await fetch('http://localhost:3001/players', {
-        headers: {
-          Accept: 'application/json',
-        },
-      });
+      const response = await API.getAllPlayers();
+      const data = response.data;
+      console.log('fetch players data');
+      console.log(data);
 
-      const json = await response.json();
-      dispatch(fetchPlayersSuccess(json));
+      dispatch(fetchPlayersSuccess(data));
+      // console.log(data)
+      console.log('Use effect');
     })();
   }, [dispatch]);
+
+  async function deletePlayer(id) {
+    try {
+      const response = await API.deletePlayer(id);
+      console.log('Delete player response');
+      console.log(response);
+      dispatch(deletePlayerSuccess(id));
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const players = useSelector(getPlayers);
 
@@ -34,7 +55,7 @@ const PlayerTable = () => {
       className="player-table"
     >
       <TableHeader />
-      <TableBody players={players} />
+      <TableBody players={players} deletePlayer={deletePlayer} />
     </div>
   );
 };
