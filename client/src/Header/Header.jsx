@@ -24,7 +24,7 @@ const Header = () => {
         className="button is-family-sans-serif is-inverted is-outlined is-primary mr-6 mb-2"
         onClick={() => dispatch(toggleAddModal())}
       >
-        <FontAwesomeIcon className="__icon" icon={faPlus} />
+        <FontAwesomeIcon className="header_container__icon" icon={faPlus} />
         Player
       </button>
     </div>

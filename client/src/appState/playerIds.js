@@ -2,7 +2,6 @@ import {
   FETCH_PLAYERS_SUCCESS,
   DELETE_PLAYER_SUCCESS,
   ADD_PLAYER_SUCCESS,
-  UPDATE_PLAYER_SUCCESS,
 } from './constants';
 
 function removePlayer(state, data) {

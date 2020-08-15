@@ -12,10 +12,6 @@ function mergePlayers(state, { players }) {
   players.forEach((player) => {
     newState[player.id] = player;
   });
-  // console.log("-=-=-=-=-=-=-=-=-=-=-=-=")
-  // console.log(players)
-  // console.log(newState)
-  // console.log("-=-=-=-=-=-=-=-=-=-=-=-=")
   return newState;
 }
 
@@ -30,14 +26,6 @@ function mergeNewPlayer(state, data) {
       imageUrl: data.imageUrl,
     },
   };
-
-  // console.log("-=-=-=-=-=-=-=-=-=-=-=-=")
-  // console.log(data)
-  // console.log("-=-=-=-=-=-=-=-=-=-=-=-=")
-  // console.log('this is new old state ================')
-  // console.log(state)
-  // console.log('this is new state ================')
-  // console.log(newState)
   return newState;
 }
 

@@ -15,8 +15,6 @@ const Modal = () => {
   const dispatch = useDispatch();
 
   const getState = (state) => {
-    console.log('UI State  ===================');
-    console.log(state.UI);
     return state.UI;
   };
 
@@ -41,7 +39,6 @@ const Modal = () => {
     try {
       const response = await API.addPlayer(newPlayer);
       const data = response.data;
-      console.log(data);
       dispatch(addPlayerSuccess(data));
       dispatch(toggleAddModal());
     } catch (error) {
@@ -60,7 +57,6 @@ const Modal = () => {
     try {
       const response = await API.updatePlayer(playerId, updatedPlayerData);
       const data = response.data;
-      console.log(data);
       dispatch(updatePlayerSuccess(data));
       dispatch(toggleAddModal());
     } catch (error) {
@@ -71,6 +67,7 @@ const Modal = () => {
   async function deletePlayer(id) {
     try {
       const response = await API.deletePlayer(id);
+      console.log(response);
       dispatch(deletePlayerSuccess(id));
       dispatch(toggleAddModal());
     } catch (error) {
