@@ -1,5 +1,6 @@
 import React from 'react';
-import 'bulma/css/bulma.css';
+import './bulmastyles.scss';
+import './index';
 
 import Header from './Header/Header';
 import PlayerTable from './PlayerTable/PlayerTable';

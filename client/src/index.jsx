@@ -2,7 +2,7 @@ import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import './index.scss';
+import './index';
 import App from './App';
 import rootReducer from './appState/index';
 import * as serviceWorker from './serviceWorker';

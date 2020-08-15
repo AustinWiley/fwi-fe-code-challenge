@@ -1,33 +1,33 @@
 import React from 'react';
-// import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-// import 'bulma/css/bulma.css'
-
 import { toggleAddModal } from '../appState/actions';
-
-import 'bulma/css/bulma.css';
-
 import './Header.scss';
 import { ReactComponent as CloudColor } from './cloud-color.svg';
 import { ReactComponent as CloudEffects } from './cloud-effects.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
   const dispatch = useDispatch();
 
   return (
-    <header id="main-header" className="header">
-      <div className="logo">
-        <CloudColor className="logo__color" />
-        <CloudEffects className="logo__effects" />
-      </div>
-      <h1 className="header__title">FWI Poker Challenge</h1>
+    <div className="header_container">
+      <header id="main-header" className="header">
+        <div className="logo">
+          <CloudColor className="logo__color" />
+          <CloudEffects className="logo__effects" />
+        </div>
+        <h1 className="header__title">FWI Poker Challenge</h1>
+      </header>
+      <h1 className="header_container__subtitle">POKER PLAYERS</h1>
       <button
-        className="button is-danger"
+        className="button is-family-sans-serif is-inverted is-outlined is-primary mr-6 mb-2"
         onClick={() => dispatch(toggleAddModal())}
       >
-        addplayer
+        <FontAwesomeIcon className="__icon" icon={faPlus} />
+        Player
       </button>
-    </header>
+    </div>
   );
 };
 

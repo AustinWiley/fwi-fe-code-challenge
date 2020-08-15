@@ -8,6 +8,7 @@ const TableHeader = () => (
   >
     <thead>
       <tr role="row">
+        <th role="columnheader" className="table__header table__edit" />
         <th role="columnheader" className="table__header table__avatar" />
         <th role="columnheader" className="table__header table__player">
           Player

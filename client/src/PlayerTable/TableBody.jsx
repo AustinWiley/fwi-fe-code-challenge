@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Flags from 'react-world-flags';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import Avatar from '../Avatar';
 import { COUNTRIES } from '../constants';
 
@@ -15,6 +16,16 @@ const TableBody = ({ players, deletePlayer, addPlayer, openUpdateModal }) => {
       <tbody>
         {players.map(({ id, name, country, winnings, imageUrl }) => (
           <tr key={id} role="row" className="table__row">
+            <td role="gridcell" className="table__native">
+              <div className="">
+                <button
+                  className="button is-primary is-inverted"
+                  onClick={() => openUpdateModal(id)}
+                >
+                  <FontAwesomeIcon className="table__edit_icon" icon={faEdit} />
+                </button>
+              </div>
+            </td>
             <td role="gridcell" className="table__avatar">
               <Avatar src={imageUrl} />
             </td>
@@ -33,18 +44,6 @@ const TableBody = ({ players, deletePlayer, addPlayer, openUpdateModal }) => {
                   <Flags code={country} alt="" />
                 </Avatar>
                 {country}
-              </div>
-            </td>
-            {/* <td role="gridcell" className="table__native">
-              <div className="">
-                <button onClick={() => deletePlayer(id)}>Remove</button>
-              </div>
-            </td> */}
-            <td role="gridcell" className="table__native">
-              <div className="">
-                <button onClick={() => openUpdateModal(id)}>
-                  UPDATE player
-                </button>
               </div>
             </td>
           </tr>

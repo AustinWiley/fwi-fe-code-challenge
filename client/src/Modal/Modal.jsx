@@ -123,7 +123,7 @@ const Modal = () => {
                 <label className="label">Winnings</label>
                 <input
                   type="text"
-                  className="input is-success"
+                  className="input"
                   placeholder="Enter Winnings"
                   onChange={inputChange}
                   name="winnings"
@@ -151,7 +151,7 @@ const Modal = () => {
                 <input
                   name="imageUrl"
                   type="text"
-                  className="input is-danger"
+                  className="input"
                   placeholder="Enter URL to image"
                   value={uiState.imageUrl}
                   onChange={inputChange}
@@ -169,7 +169,7 @@ const Modal = () => {
                 ? false
                 : true
             }
-            className="button is-success"
+            className="button is-primary"
             onClick={() => {
               uiState.modalAction === 'update' ? updatePlayer() : addPlayer();
             }}

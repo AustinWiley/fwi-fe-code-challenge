@@ -3,8 +3,9 @@
 $header-height: 2.5rem;
 
 .player-table {
-  margin-top: 3.5rem;
+  margin-top: 7rem; //this control table height
   padding-top: calc(#{$header-height} + 1px); // 1px for border of header
+  font-family: 'Montserrat', sans-serif;
 }
 
 .table {
@@ -17,7 +18,7 @@ $header-height: 2.5rem;
     border-bottom: 1px solid $fog;
     left: 0;
     position: fixed;
-    top: 3.5rem;
+    top: 7rem;
     z-index: 1;
   }
 
@@ -48,9 +49,22 @@ $header-height: 2.5rem;
     vertical-align: middle;
   }
 
+  &__edit_icon {
+    font-size: 1.25rem;
+    letter-spacing: 0.0125em;
+    line-height: 2rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+  }
+
   &__avatar {
     text-align: center;
     width: 4rem;
+  }
+
+  &__edit {
+    text-align: center;
+    width: 6rem;
   }
 
   &__player {
@@ -64,7 +78,7 @@ $header-height: 2.5rem;
   }
 
   &__native {
-    width: 6rem;
+    width: 7rem; // width of native header
   }
 }
 

@@ -1,5 +1,40 @@
 @import '../variables';
 
+.header_container {
+  align-items: center;
+  background-color: $vivid;
+  box-shadow: 0 4px 5px 0 rgba($sleeping-panther, 0.14),
+    0 1px 10px 0 rgba($sleeping-panther, 0.12),
+    0 2px 4px -1px rgba($sleeping-panther, 0.4);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 7rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+
+  &__subtitle {
+    color: $snow;
+    font-size: 1.25rem;
+    letter-spacing: 0.0125em;
+    line-height: 2rem;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 0 0.5rem 3.5rem;
+  }
+
+  &__icon {
+    font-size: 1.25rem;
+    letter-spacing: 0.0125em;
+    line-height: 2rem;
+    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+}
+
 .header {
   align-items: center;
   background-color: $charcoal;
@@ -9,7 +44,7 @@
   display: flex;
   height: 3.5rem;
   position: fixed;
-  top: 0;
+  top: 0; //how far fromteh top
   width: 100%;
 
   &__title {
@@ -19,8 +54,16 @@
     line-height: 2rem;
     font-weight: 500;
     margin: 0 1rem;
+    font-family: 'Montserrat', sans-serif;
   }
 }
+
+.mybutton {
+  margin: 5rem;
+}
+// h3 {
+//     margin: 0px
+// }
 
 .logo {
   height: 3.125rem;
