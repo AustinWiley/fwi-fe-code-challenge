@@ -6,7 +6,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import Avatar from '../Avatar';
 import { COUNTRIES } from '../constants';
 
-const TableBody = ({ players, deletePlayer, addPlayer, openUpdateModal }) => {
+const TableBody = ({ players, openUpdateModal }) => {
   return (
     <table
       id="player-table-body"
