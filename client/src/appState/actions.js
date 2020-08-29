@@ -6,6 +6,7 @@ import {
   TOGGLE_ADD_MODAL,
   HANDLE_INPUT_CHANGE,
   OPEN_UPDATE_MODAL,
+  TOGGLE_SORT,
 } from './constants';
 
 export function fetchPlayersSuccess(data) {
@@ -31,6 +32,11 @@ export function toggleAddModal(data) {
 export function handleInputChange(data) {
   return { type: HANDLE_INPUT_CHANGE, payload: { data } };
 }
+
 export function handleOpenUpdate(data) {
   return { type: OPEN_UPDATE_MODAL, payload: { data } };
+}
+
+export function toggleSort(data) {
+  return { type: TOGGLE_SORT, payload: { data } };
 }

@@ -16,7 +16,7 @@ const TableBody = ({ players, deletePlayer, addPlayer, openUpdateModal }) => {
       <tbody>
         {players.map(({ id, name, country, winnings, imageUrl }) => (
           <tr key={id} role="row" className="table__row">
-            <td role="gridcell" className="table__native">
+            <td role="gridcell" className="table__edit">
               <div className="">
                 <button
                   className="button is-primary is-inverted"

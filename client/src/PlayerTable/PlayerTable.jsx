@@ -20,7 +20,14 @@ const PlayerTable = () => {
 
   useEffect(() => {
     (async function fetchPlayers() {
-      const response = await API.getAllPlayers();
+      const initSort = {
+        sortBy: 'name',
+        sortOrder: 'asc',
+        size: 24,
+        from: 0,
+        total: 0,
+      };
+      const response = await API.getSortedPlayers(initSort);
       const data = response.data;
       dispatch(fetchPlayersSuccess(data));
     })();
