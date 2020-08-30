@@ -3,9 +3,8 @@
 $header-height: 2.5rem;
 
 .player-table {
-  margin-top: 7rem; //this control table height
+  margin-top: 7.5rem;
   padding-top: calc(#{$header-height} + 1px); // 1px for border of header
-  font-family: 'Montserrat', sans-serif;
 }
 
 .table {
