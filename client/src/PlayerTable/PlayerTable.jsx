@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPlayersSuccess, handleOpenUpdate } from '../appState/actions';
+import {
+  fetchPlayersSuccess,
+  handleOpenUpdate,
+  getMorePlayers,
+} from '../appState/actions';
 import './PlayerTable.scss';
 import API from '../Utils/API';
 import TableHeader from './TableHeader';
@@ -36,6 +40,38 @@ const PlayerTable = () => {
       console.error(error);
     }
   }
+
+  const sortState = useSelector((state) => state.sortAPI);
+
+  async function getMore() {
+    try {
+      if (sortState.from < sortState.total) {
+        const newFrom = sortState.from + sortState.size;
+
+        const sortData = {
+          ...sortState,
+          from: newFrom,
+        };
+
+        const response = await API.getSortedPlayers(sortData);
+        const data = response.data;
+        dispatch(getMorePlayers(data));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //continuous scrolling - get more results once user has scrolled to the bottom of the window
+  window.onscroll = function () {
+    var d = document.documentElement;
+    var offset = d.scrollTop + window.innerHeight;
+    var height = d.offsetHeight;
+
+    if (offset >= height - 10) {
+      getMore();
+    }
+  };
 
   const players = useSelector(getPlayers);
 

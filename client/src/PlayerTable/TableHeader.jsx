@@ -24,6 +24,7 @@ const TableHeader = () => {
 
       const sortData = {
         ...sortState,
+        from: 0,
         sortOrder: sortOrder,
         sortBy: sortBy,
       };
@@ -32,6 +33,7 @@ const TableHeader = () => {
       const data = response.data;
       dispatch(fetchPlayersSuccess(data));
       dispatch(toggleSort({ sortOrder, sortBy }));
+      window.scrollTo(0, 0);
     } catch (error) {
       console.error(error);
     }

@@ -7,6 +7,7 @@ import {
   HANDLE_INPUT_CHANGE,
   OPEN_UPDATE_MODAL,
   TOGGLE_SORT,
+  GET_MORE_PLAYERS_SUCCESS,
 } from './constants';
 
 export function fetchPlayersSuccess(data) {
@@ -39,4 +40,8 @@ export function handleOpenUpdate(data) {
 
 export function toggleSort(data) {
   return { type: TOGGLE_SORT, payload: { data } };
+}
+
+export function getMorePlayers(data) {
+  return { type: GET_MORE_PLAYERS_SUCCESS, payload: { data } };
 }
