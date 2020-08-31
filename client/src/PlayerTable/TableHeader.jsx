@@ -13,7 +13,6 @@ const TableHeader = () => {
   async function sortPlayers(sortBy) {
     try {
       let sortOrder;
-
       if (sortState.sortBy !== sortBy) {
         sortOrder = 'asc';
       } else if (sortState.sortOrder === 'desc') {
@@ -21,19 +20,18 @@ const TableHeader = () => {
       } else {
         sortOrder = 'desc';
       }
-
       const sortData = {
         ...sortState,
         from: 0,
         sortOrder: sortOrder,
         sortBy: sortBy,
       };
-
       const response = await API.getSortedPlayers(sortData);
-      const data = response.data;
-      dispatch(fetchPlayersSuccess(data));
-      dispatch(toggleSort({ sortOrder, sortBy }));
-      window.scrollTo(0, 0);
+      if (response.status === 200) {
+        dispatch(fetchPlayersSuccess(response.data));
+        dispatch(toggleSort({ sortOrder, sortBy }));
+        window.scrollTo(0, 0);
+      }
     } catch (error) {
       console.error(error);
     }
