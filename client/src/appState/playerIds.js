@@ -1,7 +1,7 @@
 import {
   FETCH_PLAYERS_SUCCESS,
   DELETE_PLAYER_SUCCESS,
-  ADD_PLAYER_SUCCESS,
+  GET_MORE_PLAYERS_SUCCESS,
 } from './constants';
 
 function removePlayer(state, data) {
@@ -9,10 +9,12 @@ function removePlayer(state, data) {
   return newState;
 }
 
-function addPlayer(state, data) {
+function addPlayers(state, data) {
   const newState = state;
-  newState.push(data.id);
-  return newState;
+  data.forEach((data) => {
+    newState.push(data.id);
+  });
+  return state;
 }
 
 export default function playerIds(state = [], action) {
@@ -21,8 +23,8 @@ export default function playerIds(state = [], action) {
       return action.payload.data.players.map((player) => player.id);
     case DELETE_PLAYER_SUCCESS:
       return removePlayer(state, action.payload.data);
-    case ADD_PLAYER_SUCCESS:
-      return addPlayer(state, action.payload.data);
+    case GET_MORE_PLAYERS_SUCCESS:
+      return addPlayers(state, action.payload.data.players);
     default:
       return state;
   }

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { COUNTRIES } from '../constants';
 import {
   deletePlayerSuccess,
-  addPlayerSuccess,
-  updatePlayerSuccess,
+  fetchPlayersSuccess,
   toggleAddModal,
+  toggleSort,
   handleInputChange,
 } from '../appState/actions';
 import API from '../Utils/API';
@@ -14,11 +14,9 @@ import { validURL, toDollars } from '../Utils/TOOLS';
 const Modal = () => {
   const dispatch = useDispatch();
 
-  const getState = (state) => {
-    return state.UI;
-  };
+  const uiState = useSelector((state) => state.UI);
 
-  const uiState = useSelector(getState);
+  const sortState = useSelector((state) => state.sortAPI);
 
   function inputChange(event) {
     const { name, value } = event.target;
@@ -27,6 +25,21 @@ const Modal = () => {
       value: name === 'winnings' ? Number(value.replace(/[^0-9]/g, '')) : value,
     };
     dispatch(handleInputChange(data));
+  }
+
+  async function refreshPlayers() {
+    const sortData = {
+      ...sortState,
+      from: 0,
+      sortOrder: sortState.sortOrder,
+      sortBy: sortState.sortBy,
+    };
+    const response = await API.getSortedPlayers(sortData);
+    const data = response.data;
+    dispatch(fetchPlayersSuccess(data));
+    dispatch(toggleSort({ ...sortData }));
+    window.scrollTo(0, 0);
+    dispatch(toggleAddModal());
   }
 
   async function addPlayer() {
@@ -38,9 +51,9 @@ const Modal = () => {
     };
     try {
       const response = await API.addPlayer(newPlayer);
-      const data = response.data;
-      dispatch(addPlayerSuccess(data));
-      dispatch(toggleAddModal());
+      if (response.status === 201) {
+        refreshPlayers();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -56,9 +69,9 @@ const Modal = () => {
     };
     try {
       const response = await API.updatePlayer(playerId, updatedPlayerData);
-      const data = response.data;
-      dispatch(updatePlayerSuccess(data));
-      dispatch(toggleAddModal());
+      if (response.status === 200) {
+        refreshPlayers();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -67,9 +80,10 @@ const Modal = () => {
   async function deletePlayer(id) {
     try {
       const response = await API.deletePlayer(id);
-      console.log(response);
-      dispatch(deletePlayerSuccess(id));
-      dispatch(toggleAddModal());
+      if (response.status === 204) {
+        dispatch(deletePlayerSuccess(id));
+        dispatch(toggleAddModal());
+      }
     } catch (error) {
       console.error(error);
     }

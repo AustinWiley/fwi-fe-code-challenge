@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchPlayersSuccess,
-  deletePlayerSuccess,
-  addPlayerSuccess,
   handleOpenUpdate,
+  getMorePlayers,
 } from '../appState/actions';
 import './PlayerTable.scss';
 import API from '../Utils/API';
@@ -20,31 +19,18 @@ const PlayerTable = () => {
 
   useEffect(() => {
     (async function fetchPlayers() {
-      const response = await API.getAllPlayers();
+      const initSort = {
+        sortBy: 'name',
+        sortOrder: 'asc',
+        size: 24,
+        from: 0,
+        total: 0,
+      };
+      const response = await API.getSortedPlayers(initSort);
       const data = response.data;
       dispatch(fetchPlayersSuccess(data));
     })();
   }, [dispatch]);
-
-  async function addPlayer() {
-    try {
-      const response = await API.addPlayer();
-      const data = response.data;
-      dispatch(addPlayerSuccess(data));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function deletePlayer(id) {
-    try {
-      const response = await API.deletePlayer(id);
-      console.log(response);
-      dispatch(deletePlayerSuccess(id));
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   async function openUpdateModal(id) {
     try {
@@ -54,6 +40,38 @@ const PlayerTable = () => {
       console.error(error);
     }
   }
+
+  const sortState = useSelector((state) => state.sortAPI);
+
+  async function getMore() {
+    try {
+      if (sortState.from < sortState.total) {
+        const newFrom = sortState.from + sortState.size;
+
+        const sortData = {
+          ...sortState,
+          from: newFrom,
+        };
+
+        const response = await API.getSortedPlayers(sortData);
+        const data = response.data;
+        dispatch(getMorePlayers(data));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //continuous scrolling - get more results once user has scrolled to the bottom of the window
+  window.onscroll = function () {
+    var d = document.documentElement;
+    var offset = d.scrollTop + window.innerHeight;
+    var height = d.offsetHeight;
+
+    if (offset >= height - 10) {
+      getMore();
+    }
+  };
 
   const players = useSelector(getPlayers);
 
@@ -65,12 +83,7 @@ const PlayerTable = () => {
       className="player-table"
     >
       <TableHeader />
-      <TableBody
-        players={players}
-        deletePlayer={deletePlayer}
-        addPlayer={addPlayer}
-        openUpdateModal={openUpdateModal}
-      />
+      <TableBody players={players} openUpdateModal={openUpdateModal} />
     </div>
   );
 };

@@ -2,10 +2,11 @@ import axios from 'axios';
 const BASEURL = 'http://localhost:3001/';
 
 export default {
-  getAllPlayers: function () {
-    return axios.get(BASEURL + 'players', {
-      headers: {},
-    });
+  getSortedPlayers: function ({ sortBy, sortOrder, size, from }) {
+    return axios.get(
+      BASEURL +
+        `players?sortBy=${sortBy}&sortOrder=${sortOrder}&size=${size}&from=${from}`
+    );
   },
   getAPlayer: function (playerId) {
     return axios.get(BASEURL + 'players/' + playerId);

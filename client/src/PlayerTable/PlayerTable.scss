@@ -3,9 +3,8 @@
 $header-height: 2.5rem;
 
 .player-table {
-  margin-top: 7rem; //this control table height
+  margin-top: 7.5rem;
   padding-top: calc(#{$header-height} + 1px); // 1px for border of header
-  font-family: 'Montserrat', sans-serif;
 }
 
 .table {
@@ -74,11 +73,11 @@ $header-height: 2.5rem;
   &__winnings {
     padding-right: 1.5rem;
     text-align: right;
-    width: 8rem;
+    width: 10rem;
   }
 
   &__native {
-    width: 7rem; // width of native header
+    width: 9rem; // width of native header
   }
 }
 
